@@ -1,10 +1,20 @@
-﻿string current = Directory.GetCurrentDirectory();
+﻿using System.Security.Cryptography.X509Certificates;
+
+string current = Directory.GetCurrentDirectory();
 string name = Path.GetFileName(current);
 
 Console.WriteLine($"Renaming project files to '{name}'. . .");
 
 ProcessFiles(current);
-ProcessFiles(Path.Combine(current, "src"));
+ProcessFolder(current);
+
+void ProcessFolder(string dir)
+{
+    foreach (var folder in Directory.EnumerateDirectories(dir).Where(x => Path.GetFileName(x) is not ".git" or "lib")) {
+        ProcessFiles(folder);
+        ProcessFolder(folder);
+    }
+}
 
 void ProcessFiles(string dir)
 {
