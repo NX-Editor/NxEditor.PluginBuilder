@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-string current = Directory.GetCurrentDirectory();
+﻿string current = Directory.GetCurrentDirectory();
 string name = Path.GetFileName(current);
 
 Console.WriteLine($"Renaming project files to '{name}'. . .");
