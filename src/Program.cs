@@ -19,16 +19,17 @@ void ProcessFolder(string dir)
 void ProcessFiles(string dir)
 {
     foreach (var file in Directory.EnumerateFiles(dir, "*.*")) {
-        if (!file.Contains(sourceName)) {
-            continue;
-        }
-
         string newFile = Path.Combine(dir, Path.GetRelativePath(dir, file).Replace(sourceName, name));
 
         string value = File.ReadAllText(file);
         value = value.Replace(sourceName, name);
 
-        File.Delete(file);
-        File.WriteAllText(newFile, value);
+        try {
+            File.Delete(file);
+            File.WriteAllText(newFile, value);
+        }
+        catch {
+            Console.WriteLine($"Skipped '{file}'");
+        }
     }
 }
