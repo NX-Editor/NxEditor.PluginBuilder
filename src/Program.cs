@@ -1,4 +1,6 @@
-﻿string current = Directory.GetCurrentDirectory();
+﻿const string sourceName = "NxEditor.PluginTemplate";
+
+string current = Directory.GetCurrentDirectory();
 string name = Path.GetFileName(current);
 
 Console.WriteLine($"Renaming project files to '{name}'. . .");
@@ -17,10 +19,14 @@ void ProcessFolder(string dir)
 void ProcessFiles(string dir)
 {
     foreach (var file in Directory.EnumerateFiles(dir, "*.*")) {
-        string newFile = Path.Combine(dir, Path.GetRelativePath(dir, file).Replace("NxEditor.PluginTemplate", name));
+        if (!file.Contains(sourceName)) {
+            continue;
+        }
+
+        string newFile = Path.Combine(dir, Path.GetRelativePath(dir, file).Replace(sourceName, name));
 
         string value = File.ReadAllText(file);
-        value = value.Replace("NxEditor.PluginTemplate", name);
+        value = value.Replace(sourceName, name);
 
         File.Delete(file);
         File.WriteAllText(newFile, value);
